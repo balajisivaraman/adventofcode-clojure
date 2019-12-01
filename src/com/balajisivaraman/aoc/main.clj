@@ -17,6 +17,7 @@
   (println
    (match [problem]
           ["day01a"] (day01a (read-input "input/day01a"))
+          ["day01b"] (day01b (read-input "input/day01b"))
           :else "Problem not found")))
 
 (defn -main
