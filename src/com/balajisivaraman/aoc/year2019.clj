@@ -14,12 +14,12 @@
        (reduce + 0)))
 
 (defn- calc-additional-fuel
-  ([input] (calc-additional-fuel input 0))
-  ([input acc]
-   (let [required-fuel (calc-fuel input)]
-     (if (< required-fuel 0)
+  [input]
+  (loop [required-fuel (calc-fuel input)
+         acc 0]
+    (if (< required-fuel 0)
       acc
-      (calc-additional-fuel required-fuel (+ acc required-fuel))))))
+      (recur (calc-fuel required-fuel) (+ acc required-fuel)))))
 
 (defn day01b
   [input]
