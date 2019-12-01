@@ -6,7 +6,11 @@
 
 (defn- read-input
   [filename]
-  (split-lines (slurp (clojure.java.io/resource filename))))
+  (->> filename
+       (clojure.java.io/resource)
+       (slurp)
+       (split-lines)
+       (map #(Integer/parseInt %1))))
 
 (defn run
   [problem]
