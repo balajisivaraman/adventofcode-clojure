@@ -1,20 +1,18 @@
-(ns com.balajisivaraman.aoc.year2019)
+(ns com.balajisivaraman.aoc.year2019
+  (:require [clojure.core.match :refer [match]]))
 
-(defn- calc-fuel
-  [input]
+(defn- calc-fuel [input]
   (-> input
       (/ 3)
       (Math/floor)
       (- 2)))
 
-(defn day01a
-  [input]
+(defn day01a [input]
   (->> input
        (map calc-fuel)
        (reduce + 0)))
 
-(defn day01b
-  [input]
+(defn day01b [input]
   (let [calc-additional-fuel
         (fn [input]
           (loop [required-fuel (calc-fuel input)
@@ -25,3 +23,18 @@
     (->> input
          (map calc-additional-fuel)
          (reduce + 0))))
+
+(defn day02a [input]
+  (loop [intcode input
+         index 0]
+    (let [opcode (intcode index)]
+      (match [opcode]
+             [1] (let [v1 (intcode (intcode (+ index 1)))
+                       v2 (intcode (intcode (+ index 2)))
+                       target-position (intcode (+ index 3))]
+                   (recur (assoc intcode target-position (+ v1 v2)) (+ index 4)))
+             [2] (let [v1 (intcode (intcode (+ index 1)))
+                       v2 (intcode (intcode (+ index 2)))
+                       target-position (intcode (+ index 3))]
+                   (recur (assoc intcode target-position (* v1 v2)) (+ index 4)))
+             [99] intcode))))
