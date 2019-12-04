@@ -18,7 +18,7 @@
        (clojure.java.io/resource)
        (slurp)
        (trim-newline)
-       (str/split #",")
+       (split #",")
        (->>
         (map #(Integer/parseInt %1)))
        (vec)))
