@@ -28,13 +28,12 @@
   (loop [intcode input
          index 0]
     (let [opcode (intcode index)]
-      (match [opcode]
-             [1] (let [v1 (intcode (intcode (+ index 1)))
-                       v2 (intcode (intcode (+ index 2)))
-                       target-position (intcode (+ index 3))]
-                   (recur (assoc intcode target-position (+ v1 v2)) (+ index 4)))
-             [2] (let [v1 (intcode (intcode (+ index 1)))
-                       v2 (intcode (intcode (+ index 2)))
-                       target-position (intcode (+ index 3))]
-                   (recur (assoc intcode target-position (* v1 v2)) (+ index 4)))
-             [99] intcode))))
+      (if (= 99 opcode)
+        intcode
+        (let [v1 (intcode (intcode (+ index 1)))
+              v2 (intcode (intcode (+ index 2)))
+              target-position (intcode (+ index 3))
+              op (match [opcode]
+                        [1] (partial +)
+                        [2] (partial *))]
+          (recur (assoc intcode target-position (op v1 v2)) (+ index 4)))))))
