@@ -27,8 +27,8 @@
   [problem]
   (println
    (match [problem]
-          ["day01a"] (day01a (read-input "input/day01a"))
-          ["day01b"] (day01b (read-input "input/day01b"))
+          ["day01a"] (day01a (read-input "input/day01"))
+          ["day01b"] (day01b (read-input "input/day01"))
           ["day02a"] (day02a (read-input-b "input/day02"))
           ["day02b"] (day02b (read-input-b "input/day02"))
           :else "Problem not found")))
