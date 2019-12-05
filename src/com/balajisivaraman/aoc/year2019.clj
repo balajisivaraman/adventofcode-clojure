@@ -1,5 +1,6 @@
 (ns com.balajisivaraman.aoc.year2019
-  (:require [clojure.core.match :refer [match]]))
+  (:require [clojure.core.match :refer [match]]
+            [clojure.math.combinatorics :as combo]))
 
 (defn- calc-fuel [input]
   (-> input
@@ -37,3 +38,17 @@
                         [1] (partial +)
                         [2] (partial *))]
           (recur (assoc intcode target-position (op v1 v2)) (+ index 4)))))))
+
+(defn day02b [input]
+  (let [combos (combo/permuted-combinations (range 0 100) 2)
+        map-fn (fn [combo]
+                 (let [pair (vec combo)
+                       noun (pair 0)
+                       verb (pair 1)
+                       intcode (assoc (assoc input 1 noun) 2 verb)
+                       result (day02a intcode)]
+                   {:result (result 0) :noun noun :verb verb}))
+        reduce-fn (fn [ignored result]
+                    (when (= 19690720 (result :result))
+                      (reduced (+ (result :verb) (* 100 (result :noun))))))]
+    (reduce reduce-fn {:result nil} (map map-fn combos))))
